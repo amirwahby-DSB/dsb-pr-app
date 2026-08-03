@@ -1,0 +1,19 @@
+{
+  "$id": "https://dsb-alexandria.de/schemas/chat_message.schema.json",
+  "title": "ChatMessage",
+  "type": "object",
+  "required": ["messageId", "threadId", "senderId", "text", "sentAt"],
+  "properties": {
+    "messageId": { "type": "string" },
+    "threadId": { "type": "string", "description": "Usually equals requestId, or 'general_pr_office'" },
+    "senderId": { "type": "string" },
+    "text": { "type": "string" },
+    "attachmentUrl": { "type": "string", "format": "uri" },
+    "sentAt": { "type": "string", "format": "date-time" },
+    "readBy": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "userIds who have read this message"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$id": "https://dsb-alexandria.de/schemas/report.schema.json",
+  "title": "AnalyticsReport",
+  "type": "object",
+  "required": ["reportId", "period", "generatedAt", "metrics"],
+  "properties": {
+    "reportId": { "type": "string" },
+    "period": { "type": "string", "enum": ["weekly", "monthly", "annual", "custom"] },
+    "periodStart": { "type": "string", "format": "date" },
+    "periodEnd": { "type": "string", "format": "date" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "generatedById": { "type": "string" },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "totalRequests": { "type": "integer" },
+        "completedRequests": { "type": "integer" },
+        "avgResolutionHours": { "type": "number" },
+        "printingJobsCompleted": { "type": "integer" },
+        "tripsOrganized": { "type": "integer" },
+        "eventsManaged": { "type": "integer" },
+        "mediaRequestsHandled": { "type": "integer" },
+        "visasProcessed": { "type": "integer" },
+        "requestsByPillar": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        }
+      }
+    },
+    "exportUrl": { "type": "string", "format": "uri", "description": "Generated PDF location" }
+  }
+}

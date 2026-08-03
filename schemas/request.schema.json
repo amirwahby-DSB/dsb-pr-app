@@ -1,0 +1,65 @@
+{
+  "$id": "https://dsb-alexandria.de/schemas/request.schema.json",
+  "title": "PRRequest",
+  "type": "object",
+  "required": ["requestId", "pillar", "serviceType", "title", "requesterId", "status", "createdAt"],
+  "properties": {
+    "requestId": { "type": "string", "description": "e.g. PR-2026-00147" },
+    "pillar": {
+      "type": "string",
+      "enum": [
+        "public_relations_partnerships",
+        "consular_visas",
+        "logistics_field_trips",
+        "digital_media_identity",
+        "event_management",
+        "printing_operations"
+      ]
+    },
+    "serviceType": {
+      "type": "string",
+      "description": "Sub-service under the pillar, e.g. 'vfs_visa_booking', 'exam_printing', 'flight_booking', 'graduation_venue_booking'"
+    },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "requesterId": { "type": "string", "description": "FK -> AppUser.userId" },
+    "assignedToId": { "type": "string", "description": "FK -> AppUser.userId (pr_staff)" },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "awaiting_info", "completed", "cancelled"]
+    },
+    "priority": { "type": "string", "enum": ["low", "normal", "high", "urgent"], "default": "normal" },
+    "dueDate": { "type": "string", "format": "date" },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fileName": { "type": "string" },
+          "fileUrl": { "type": "string", "format": "uri" },
+          "uploadedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "dynamicFields": {
+      "type": "object",
+      "description": "Service-specific form payload, e.g. { studentCount: 30, destination: 'Berlin', copies: 120 }",
+      "additionalProperties": true
+    },
+    "activityLog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "actorId": { "type": "string" },
+          "action": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": "string", "format": "date-time" }
+  }
+}

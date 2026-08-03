@@ -1,0 +1,27 @@
+{
+  "$id": "https://dsb-alexandria.de/schemas/user.schema.json",
+  "title": "AppUser",
+  "type": "object",
+  "required": ["userId", "fullName", "role", "email"],
+  "properties": {
+    "userId": { "type": "string", "description": "UUID" },
+    "fullName": { "type": "string" },
+    "fullNameAr": { "type": "string", "description": "Arabic display name" },
+    "email": { "type": "string", "format": "email" },
+    "phone": { "type": "string", "example": "+20 101 35 35 436" },
+    "role": {
+      "type": "string",
+      "enum": ["faculty", "staff", "pr_staff", "pr_admin", "leadership"]
+    },
+    "department": { "type": "string", "example": "Sekundarstufe I" },
+    "preferredLanguage": { "type": "string", "enum": ["ar", "de", "en"], "default": "ar" },
+    "avatarUrl": { "type": "string", "format": "uri" },
+    "notificationTokens": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "FCM/APNs push tokens"
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "isActive": { "type": "boolean", "default": true }
+  }
+}
