@@ -35,7 +35,7 @@ Color statusColor(String status) {
 
 class AppTheme {
   static ThemeData light() {
-    final base = ThemeData(useMaterial3: true, brightness: Brightness.light);
+    final base = ThemeData(useMaterial3: true, brightness: Brightness.light, fontFamily: 'Inter');
     return base.copyWith(
       scaffoldBackgroundColor: DSBAColors.neutralLight,
       colorScheme: base.colorScheme.copyWith(
@@ -45,7 +45,7 @@ class AppTheme {
         onPrimary: Colors.white,
         onSecondary: DSBAColors.neutralDark,
       ),
-      fontFamily: 'Inter', // falls back to Roboto/SF Pro per platform
+      
       appBarTheme: const AppBarTheme(
         backgroundColor: DSBAColors.primaryCrimson,
         foregroundColor: Colors.white,
