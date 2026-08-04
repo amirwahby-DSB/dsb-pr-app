@@ -13,7 +13,8 @@ workflows:
           flutter packages pub get
       - name: Accept Android licenses
         script: |
-          yes | flutter doctor --android-licenses || true
+          yes | sdkmanager --licenses || true
+          yes | sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
       - name: Build APK
         script: |
           flutter build apk --release
