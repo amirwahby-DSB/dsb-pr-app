@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/pr_request.dart';
+import '../models/app_user.dart';
 import '../services/mock_data_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/status_pill.dart';
@@ -8,7 +9,6 @@ import 'request_tracker_screen.dart';
 import 'requests_list_screen.dart';
 import 'services_catalog_screen.dart';
 import 'chat_screen.dart';
-
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
