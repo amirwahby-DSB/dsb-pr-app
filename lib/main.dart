@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'services/locale_service.dart';
+import 'services/app_strings.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/services_catalog_screen.dart';
 import 'screens/requests_list_screen.dart';
@@ -80,12 +81,12 @@ class _RootShellState extends State<RootShell> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _index,
           onTap: (i) => setState(() => _index = i),
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'الرئيسية'),
-            BottomNavigationBarItem(icon: Icon(Icons.menu_book_outlined), label: 'الخدمات'),
-            BottomNavigationBarItem(icon: Icon(Icons.assignment_outlined), label: 'الطلبات'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: 'المحادثة'),
-            BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'المزيد'),
+          items: [
+            BottomNavigationBarItem(icon: const Icon(Icons.home_outlined), label: AppStrings.home),
+            BottomNavigationBarItem(icon: const Icon(Icons.menu_book_outlined), label: AppStrings.services),
+            BottomNavigationBarItem(icon: const Icon(Icons.assignment_outlined), label: AppStrings.requests),
+            BottomNavigationBarItem(icon: const Icon(Icons.chat_bubble_outline), label: AppStrings.chat),
+            BottomNavigationBarItem(icon: const Icon(Icons.more_horiz), label: AppStrings.more),
           ],
         ),
       ),
