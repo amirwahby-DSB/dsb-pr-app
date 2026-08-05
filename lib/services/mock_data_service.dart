@@ -12,9 +12,9 @@ class MockDataService {
 
   final AppUser currentUser = const AppUser(
     userId: 'u-001',
-    fullName: 'Mona Kamal',
-    fullNameAr: 'منى كمال',
-    email: 'mona.kamal@dsb-alexandria.de',
+    fullName: 'Amir Wahby',
+    fullNameAr: 'أمير وهبي',
+    email: 'p.r@dsb-alexandria.de',
     role: UserRole.staff,
   );
 
