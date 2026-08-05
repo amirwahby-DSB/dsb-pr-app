@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/pr_request.dart';
 import '../models/app_user.dart';
 import '../services/mock_data_service.dart';
+import '../services/app_strings.dart';
+import '../services/locale_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/status_pill.dart';
 import 'request_form_screen.dart';
@@ -9,6 +11,7 @@ import 'request_tracker_screen.dart';
 import 'requests_list_screen.dart';
 import 'services_catalog_screen.dart';
 import 'chat_screen.dart';
+
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
@@ -17,6 +20,7 @@ class DashboardScreen extends StatelessWidget {
     final data = MockDataService.instance;
     final user = data.currentUser;
     final requests = data.getMyRequests();
+    final lang = LocaleService.instance.language;
 
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +32,11 @@ class DashboardScreen extends StatelessWidget {
             onBackgroundImageError: (_, __) {}, // graceful fallback if asset missing at build time
           ),
         ),
-        title: const Text('DSBA — بوابة العلاقات العامة'),
+        title: Text(lang == AppLanguage.ar
+            ? 'DSBA – بوابة العلاقات العامة'
+            : lang == AppLanguage.en
+                ? 'DSBA – PR & Operations Portal'
+                : 'DSBA – PR- & Betriebsportal'),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
@@ -57,7 +65,7 @@ class DashboardScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('أهلاً، ${user.fullNameAr}',
+                          Text('${AppStrings.welcome} ${lang == AppLanguage.ar ? user.fullNameAr : user.fullName}',
                               style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
                           Text(user.role.id,
                               style: const TextStyle(color: DSBAColors.textMuted, fontSize: 12)),
@@ -71,8 +79,8 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Quick actions grid
-            const Text('إجراءات سريعة',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+            Text(AppStrings.quickActions,
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
             const SizedBox(height: 10),
             GridView.count(
               crossAxisCount: 2,
@@ -84,25 +92,25 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 _QuickAction(
                   icon: Icons.add_circle_outline,
-                  label: 'طلب جديد',
+                  label: AppStrings.newRequest,
                   onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (_) => const RequestFormScreen())),
                 ),
                 _QuickAction(
                   icon: Icons.track_changes_outlined,
-                  label: 'تتبع الطلبات',
+                  label: AppStrings.trackRequests,
                   onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (_) => const RequestsListScreen())),
                 ),
                 _QuickAction(
                   icon: Icons.menu_book_outlined,
-                  label: 'دليل الخدمات',
+                  label: AppStrings.serviceGuide,
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const ServicesCatalogScreen())),
                 ),
                 _QuickAction(
                   icon: Icons.chat_bubble_outline,
-                  label: 'محادثة المكتب',
+                  label: AppStrings.officeChat,
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: (_) => ChatScreen(threadId: 'general_pr_office'))),
                 ),
@@ -114,13 +122,13 @@ class DashboardScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('طلباتي الحالية',
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                Text(AppStrings.currentRequests,
+                    style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
                 GestureDetector(
                   onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (_) => const RequestsListScreen())),
-                  child: const Text('عرض الكل',
-                      style: TextStyle(color: DSBAColors.primaryCrimson, fontSize: 12)),
+                  child: Text(AppStrings.viewAll,
+                      style: const TextStyle(color: DSBAColors.primaryCrimson, fontSize: 12)),
                 ),
               ],
             ),
@@ -137,13 +145,13 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Announcements feed
-            const Text('آخر الإعلانات', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+            Text(AppStrings.latestAnnouncements, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
             const SizedBox(height: 10),
             const Card(
               child: ListTile(
                 leading: Icon(Icons.campaign_outlined, color: DSBAColors.primaryCrimson),
-                title: Text('حفل التخرج السنوي — مكتبة الإسكندرية'),
-                subtitle: Text('التخطيط جارٍ، الموعد المبدئي يونيو 2027'),
+                title: Text('حفل التخرج السنوي – مكتبة الإسكندرية'),
+                subtitle: Text('التخطيط جارٍ الموعد المبدئي يونيو 2027'),
               ),
             ),
           ],
