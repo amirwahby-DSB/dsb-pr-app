@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
+import 'services/locale_service.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/services_catalog_screen.dart';
 import 'screens/requests_list_screen.dart';
@@ -8,18 +9,44 @@ import 'screens/settings_screen.dart';
 
 void main() => runApp(const DSBAApp());
 
-class DSBAApp extends StatelessWidget {
+class DSBAApp extends StatefulWidget {
   const DSBAApp({super.key});
 
   @override
+  State<DSBAApp> createState() => _DSBAAppState();
+}
+
+class _DSBAAppState extends State<DSBAApp> {
+  @override
+  void initState() {
+    super.initState();
+    LocaleService.instance.addListener(_onLocaleChanged);
+  }
+
+  @override
+  void dispose() {
+    LocaleService.instance.removeListener(_onLocaleChanged);
+    super.dispose();
+  }
+
+  void _onLocaleChanged() {
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final lang = LocaleService.instance.language;
+    final localeCode = switch (lang) {
+      AppLanguage.ar => 'ar',
+      AppLanguage.en => 'en',
+      AppLanguage.de => 'de',
+    };
+
     return MaterialApp(
       title: 'DSBA PR & Operations Portal',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
-      // App is Arabic-first (RTL); Directionality mirrors automatically
-      // once localization delegates for 'ar' are wired in (see l10n/ folder).
-      locale: const Locale('ar'),
+      locale: Locale(localeCode),
       home: const RootShell(),
     );
   }
@@ -45,8 +72,9 @@ class _RootShellState extends State<RootShell> {
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = LocaleService.instance.language == AppLanguage.ar;
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         body: IndexedStack(index: _index, children: _tabs),
         bottomNavigationBar: BottomNavigationBar(
