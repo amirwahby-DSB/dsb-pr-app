@@ -143,3 +143,38 @@ class _RequestListTile extends StatelessWidget {
     );
   }
 }
+static String get myRequestsTitle => switch (_lang) {
+        AppLanguage.ar => 'طلباتي',
+        AppLanguage.en => 'My Requests',
+        AppLanguage.de => 'Meine Anträge',
+      };
+
+  static String get tabActive => switch (_lang) {
+        AppLanguage.ar => 'مفتوحة',
+        AppLanguage.en => 'Active',
+        AppLanguage.de => 'Aktiv',
+      };
+
+  static String get tabCompleted => switch (_lang) {
+        AppLanguage.ar => 'مكتملة',
+        AppLanguage.en => 'Completed',
+        AppLanguage.de => 'Abgeschlossen',
+      };
+
+  static String get tabAll => switch (_lang) {
+        AppLanguage.ar => 'الكل',
+        AppLanguage.en => 'All',
+        AppLanguage.de => 'Alle',
+      };
+
+  static String get noRequestsHere => switch (_lang) {
+        AppLanguage.ar => 'لا توجد طلبات هنا',
+        AppLanguage.en => 'No requests here',
+        AppLanguage.de => 'Keine Anträge hier',
+      };
+
+  static String get createdOn => switch (_lang) {
+        AppLanguage.ar => 'بتاريخ',
+        AppLanguage.en => 'Created',
+        AppLanguage.de => 'Erstellt',
+      };
