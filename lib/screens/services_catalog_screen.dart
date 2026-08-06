@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/pr_request.dart';
 import '../widgets/pillar_card.dart';
 import 'request_form_screen.dart';
+import '../services/app_strings.dart';
 
 class ServicesCatalogScreen extends StatelessWidget {
   const ServicesCatalogScreen({super.key});
@@ -9,14 +10,14 @@ class ServicesCatalogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('دليل الخدمات — الأقسام الستة')),
+      appBar: AppBar(title: Text(AppStrings.serviceGuideTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
               decoration: InputDecoration(
-                hintText: 'ابحث عن خدمة (تأشيرة، طباعة، رحلة...)',
+                hintText: AppStrings.searchServiceHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
@@ -116,7 +117,7 @@ class PillarDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: const Text('طلب'),
+                child: Text(AppStrings.requestButton),
               ),
             ),
           );
