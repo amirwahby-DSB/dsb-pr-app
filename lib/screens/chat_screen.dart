@@ -47,8 +47,6 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text(widget.threadId == 'general_pr_office'
     ? ChatStrings.generalOfficeTitle
     : ChatStrings.threadTitle(widget.threadId)),
-            ? 'مكتب العلاقات العامة'
-            : 'محادثة الطلب ${widget.threadId}'),
       ),
       body: Column(
         children: [
