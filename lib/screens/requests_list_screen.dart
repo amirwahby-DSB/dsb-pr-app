@@ -145,6 +145,7 @@ class _RequestListTile extends StatelessWidget {
     );
   }
 }
+class _Strings {
 static String get myRequestsTitle => switch (_lang) {
         AppLanguage.ar => 'طلباتي',
         AppLanguage.en => 'My Requests',
@@ -180,3 +181,4 @@ static String get myRequestsTitle => switch (_lang) {
         AppLanguage.en => 'Created',
         AppLanguage.de => 'Erstellt',
       };
+  }
