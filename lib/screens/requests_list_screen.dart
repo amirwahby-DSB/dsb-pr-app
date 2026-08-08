@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/locale_service.dart';
+import '../services/app_strings.dart';
 import '../models/pr_request.dart';
 import '../services/mock_data_service.dart';
 import '../theme/app_theme.dart';
