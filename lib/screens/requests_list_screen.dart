@@ -146,7 +146,8 @@ class _RequestListTile extends StatelessWidget {
   }
 }
 class _Strings {
-static String get myRequestsTitle => switch (_lang) {
+  static AppLanguage get _lang => LocaleService.instance.language;
+  static String get myRequestsTitle => switch (_lang) {
         AppLanguage.ar => 'طلباتي',
         AppLanguage.en => 'My Requests',
         AppLanguage.de => 'Meine Anträge',
