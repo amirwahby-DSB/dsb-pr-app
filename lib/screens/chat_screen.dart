@@ -1,3 +1,4 @@
+import 'chat_strings.dart';
 import 'package:flutter/material.dart';
 import '../models/chat_message.dart';
 import '../services/mock_data_service.dart';
@@ -44,6 +45,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.threadId == 'general_pr_office'
+    ? ChatStrings.generalOfficeTitle
+    : ChatStrings.threadTitle(widget.threadId)),
             ? 'مكتب العلاقات العامة'
             : 'محادثة الطلب ${widget.threadId}'),
       ),
@@ -70,7 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _controller,
                       decoration: InputDecoration(
-                        hintText: 'اكتب رسالتك...',
+                        hintText: ChatStrings.messageHint,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
                       ),
