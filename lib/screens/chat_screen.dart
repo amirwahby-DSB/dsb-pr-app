@@ -30,7 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
         messageId: 'm${_messages.length + 1}',
         threadId: widget.threadId,
         senderId: MockDataService.instance.currentUser.userId,
-        senderName: 'أنتِ',
+        senderName: ChatStrings.you,
         text: text,
         sentAt: DateTime.now(),
         isMe: true,
