@@ -230,3 +230,4 @@ class _RequestMiniCard extends StatelessWidget {
       ),
     );
   }
+  }
