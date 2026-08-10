@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/mock_data_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/kpi_card.dart';
+import 'executive_dashboard_strings.dart';
 
 class ExecutiveDashboardScreen extends StatelessWidget {
   const ExecutiveDashboardScreen({super.key});
@@ -12,11 +13,11 @@ class ExecutiveDashboardScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('لوحة التقارير التنفيذية'),
+        title: Text(ExecutiveDashboardStrings.title),
         actions: [
           IconButton(
             icon: const Icon(Icons.picture_as_pdf_outlined),
-            tooltip: 'تصدير تقرير PDF',
+            tooltip: ExecutiveDashboardStrings.exportPdfTooltip,
             onPressed: () => _showExportSheet(context),
           ),
         ],
@@ -33,29 +34,29 @@ class ExecutiveDashboardScreen extends StatelessWidget {
             childAspectRatio: 1.9,
             children: [
               KpiCard(
-                  label: 'إجمالي الطلبات',
+                  label: ExecutiveDashboardStrings.totalRequests,
                   value: '${kpis['totalRequests']}',
                   icon: Icons.list_alt_outlined),
               KpiCard(
-                  label: 'الطلبات المكتملة',
+                  label: ExecutiveDashboardStrings.completedRequests,
                   value: '${kpis['completedRequests']}',
                   icon: Icons.check_circle_outline,
                   accent: DSBAColors.success),
               KpiCard(
-                  label: 'أعمال طباعة منجزة',
+                  label: ExecutiveDashboardStrings.printingJobs,
                   value: '${kpis['printingJobsCompleted']}',
                   icon: Icons.print_outlined,
                   accent: DSBAColors.accentGold),
               KpiCard(
-                  label: 'رحلات منظمة',
+                  label: ExecutiveDashboardStrings.tripsOrganized,
                   value: '${kpis['tripsOrganized']}',
                   icon: Icons.directions_bus_filled_outlined),
               KpiCard(
-                  label: 'فعاليات مُدارة',
+                  label: ExecutiveDashboardStrings.eventsManaged,
                   value: '${kpis['eventsManaged']}',
                   icon: Icons.celebration_outlined),
               KpiCard(
-                  label: 'طلبات إعلامية',
+                  label: ExecutiveDashboardStrings.mediaRequests,
                   value: '${kpis['mediaRequestsHandled']}',
                   icon: Icons.camera_alt_outlined),
             ],
@@ -67,15 +68,15 @@ class ExecutiveDashboardScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('متوسط زمن الإنجاز',
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
+                  Text(ExecutiveDashboardStrings.avgResolutionTime,
+                      style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
                   const SizedBox(height: 6),
-                  Text('${kpis['avgResolutionHours']} ساعة',
+                  Text(ExecutiveDashboardStrings.hoursValue('${kpis['avgResolutionHours']}'),
                       style: const TextStyle(
                           fontSize: 22, fontWeight: FontWeight.w800, color: DSBAColors.primaryCrimson)),
                   const SizedBox(height: 4),
-                  const Text('عبر جميع الأقسام الستة خلال الفترة الحالية',
-                      style: TextStyle(fontSize: 11, color: DSBAColors.textMuted)),
+                  Text(ExecutiveDashboardStrings.acrossPillars,
+                      style: const TextStyle(fontSize: 11, color: DSBAColors.textMuted)),
                 ],
               ),
             ),
@@ -98,22 +99,22 @@ class ExecutiveDashboardScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('تصدير تقرير PDF',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+              Text(ExecutiveDashboardStrings.exportPdfSheetTitle,
+                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
               const SizedBox(height: 12),
               ListTile(
                 leading: const Icon(Icons.calendar_view_week),
-                title: const Text('تقرير أسبوعي'),
+                title: Text(ExecutiveDashboardStrings.weeklyReport),
                 onTap: () => Navigator.pop(context),
               ),
               ListTile(
                 leading: const Icon(Icons.calendar_view_month),
-                title: const Text('تقرير شهري'),
+                title: Text(ExecutiveDashboardStrings.monthlyReport),
                 onTap: () => Navigator.pop(context),
               ),
               ListTile(
                 leading: const Icon(Icons.event_note),
-                title: const Text('تقرير سنوي'),
+                title: Text(ExecutiveDashboardStrings.yearlyReport),
                 onTap: () => Navigator.pop(context),
               ),
               // TODO: call backend endpoint POST /reports/export
