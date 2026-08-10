@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/pr_request.dart';
 import '../theme/app_theme.dart';
 import 'chat_screen.dart';
+import 'request_tracker_strings.dart';
 
 class RequestTrackerScreen extends StatelessWidget {
   final PRRequest request;
@@ -40,7 +41,8 @@ class RequestTrackerScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          const Text('حالة الطلب', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+          Text(RequestTrackerStrings.requestStatus,
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
           const SizedBox(height: 16),
           Row(
             children: List.generate(_stages.length, (i) {
@@ -81,13 +83,15 @@ class RequestTrackerScreen extends StatelessWidget {
             }),
           ),
           const SizedBox(height: 24),
-          const Text('السجل الزمني', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+          Text(RequestTrackerStrings.timeline,
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
           const SizedBox(height: 10),
           Card(
             child: ListTile(
               leading: const Icon(Icons.person_outline, color: DSBAColors.primaryCrimson),
-              title: const Text('أمير وهبي — مسؤول العلاقات العامة'),
-              subtitle: Text('آخر تحديث: ${request.createdAt.toString().split('.').first}'),
+              title: Text(RequestTrackerStrings.prOfficerName),
+              subtitle: Text(RequestTrackerStrings.lastUpdated(
+                  request.createdAt.toString().split('.').first)),
             ),
           ),
           const SizedBox(height: 20),
@@ -97,7 +101,7 @@ class RequestTrackerScreen extends StatelessWidget {
               MaterialPageRoute(builder: (_) => ChatScreen(threadId: request.requestId)),
             ),
             icon: const Icon(Icons.chat_bubble_outline),
-            label: const Text('فتح محادثة حول هذا الطلب'),
+            label: Text(RequestTrackerStrings.openChat),
           ),
         ],
       ),
