@@ -9,6 +9,12 @@ class ChatStrings {
     AppLanguage.de => 'Öffentlichkeitsarbeit',
   };
 
+  static String get you => switch (_lang) {
+    AppLanguage.ar => 'أنت',
+    AppLanguage.en => 'You',
+    AppLanguage.de => 'Du',
+  };
+
   static String threadTitle(String threadId) => switch (_lang) {
     AppLanguage.ar => 'شكوى غرفة $threadId',
     AppLanguage.en => 'Complaint Room $threadId',
