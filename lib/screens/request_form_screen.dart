@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/pr_request.dart';
 import '../theme/app_theme.dart';
+import 'request_form_strings.dart';
 
 /// Step 1: Pillar/service selection
 /// Step 2: Dynamic details form
@@ -43,12 +44,12 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
   void _next() {
     if (_step == 0 && _pillar == null) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('يرجى اختيار القسم أولاً')));
+          .showSnackBar(SnackBar(content: Text(RequestFormStrings.selectPillarFirst)));
       return;
     }
     if (_step == 1 && _titleController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('يرجى إدخال عنوان الطلب')));
+          .showSnackBar(SnackBar(content: Text(RequestFormStrings.enterTitleFirst)));
       return;
     }
     if (_step < 3) {
@@ -73,15 +74,15 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('تم إرسال الطلب'),
-        content: const Text('سيتواصل معك مكتب العلاقات العامة قريباً لمتابعة طلبك.'),
+        title: Text(RequestFormStrings.submittedTitle),
+        content: Text(RequestFormStrings.submittedBody),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(context);
             },
-            child: const Text('حسناً'),
+            child: Text(RequestFormStrings.ok),
           ),
         ],
       ),
@@ -91,7 +92,7 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('طلب خدمة جديد')),
+      appBar: AppBar(title: Text(RequestFormStrings.newRequestTitle)),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -101,7 +102,7 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () => setState(() => _step--),
-                    child: const Text('السابق'),
+                    child: Text(RequestFormStrings.previous),
                   ),
                 ),
               if (_step > 0) const SizedBox(width: 12),
@@ -109,7 +110,7 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
                 flex: 2,
                 child: ElevatedButton(
                   onPressed: _next,
-                  child: Text(_step == 3 ? 'إرسال الطلب' : 'التالي'),
+                  child: Text(_step == 3 ? RequestFormStrings.submitRequest : RequestFormStrings.next),
                 ),
               ),
             ],
@@ -141,8 +142,8 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
   Widget _pillarStep() {
     return ListView(
       children: [
-        const Text('اختر القسم المعني بالطلب',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+        Text(RequestFormStrings.choosePillarHeader,
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
         const SizedBox(height: 12),
         ...Pillar.values.map((p) => RadioListTile<Pillar>(
               value: p,
@@ -159,27 +160,27 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
   Widget _detailsStep() {
     return ListView(
       children: [
-        const Text('تفاصيل الطلب', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+        Text(RequestFormStrings.detailsHeader, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
         const SizedBox(height: 12),
         TextField(
           controller: _titleController,
-          decoration: const InputDecoration(labelText: 'عنوان الطلب'),
+          decoration: InputDecoration(labelText: RequestFormStrings.requestTitleLabel),
         ),
         const SizedBox(height: 12),
         TextField(
           controller: _descController,
           maxLines: 4,
-          decoration: const InputDecoration(labelText: 'وصف تفصيلي / ملاحظات'),
+          decoration: InputDecoration(labelText: RequestFormStrings.descriptionLabel),
         ),
         const SizedBox(height: 12),
         DropdownButtonFormField<String>(
           initialValue: _priority,
-          decoration: const InputDecoration(labelText: 'الأولوية'),
-          items: const [
-            DropdownMenuItem(value: 'low', child: Text('منخفضة')),
-            DropdownMenuItem(value: 'normal', child: Text('عادية')),
-            DropdownMenuItem(value: 'high', child: Text('عالية')),
-            DropdownMenuItem(value: 'urgent', child: Text('عاجلة')),
+          decoration: InputDecoration(labelText: RequestFormStrings.priorityLabel),
+          items: [
+            DropdownMenuItem(value: 'low', child: Text(RequestFormStrings.priorityLow)),
+            DropdownMenuItem(value: 'normal', child: Text(RequestFormStrings.priorityNormal)),
+            DropdownMenuItem(value: 'high', child: Text(RequestFormStrings.priorityHigh)),
+            DropdownMenuItem(value: 'urgent', child: Text(RequestFormStrings.priorityUrgent)),
           ],
           onChanged: (v) => setState(() => _priority = v ?? 'normal'),
         ),
@@ -190,14 +191,14 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
   Widget _attachmentsStep() {
     return ListView(
       children: [
-        const Text('المرفقات (اختياري)',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+        Text(RequestFormStrings.attachmentsHeader,
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
         const SizedBox(height: 12),
         OutlinedButton.icon(
           onPressed: () => setState(
-              () => _attachedFiles.add('مستند_${_attachedFiles.length + 1}.pdf')),
+              () => _attachedFiles.add('${RequestFormStrings.documentPrefix}_${_attachedFiles.length + 1}.pdf')),
           icon: const Icon(Icons.attach_file),
-          label: const Text('إرفاق ملف'),
+          label: Text(RequestFormStrings.attachFile),
         ),
         const SizedBox(height: 12),
         ..._attachedFiles.map((f) => Card(
@@ -217,7 +218,7 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
   Widget _reviewStep() {
     return ListView(
       children: [
-        const Text('مراجعة الطلب', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+        Text(RequestFormStrings.reviewHeader, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
         const SizedBox(height: 12),
         Card(
           child: Padding(
@@ -225,11 +226,12 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _reviewRow('القسم', _pillar?.titleAr ?? '-'),
-                _reviewRow('العنوان', _titleController.text),
-                _reviewRow('الوصف', _descController.text.isEmpty ? '-' : _descController.text),
-                _reviewRow('الأولوية', _priority),
-                _reviewRow('المرفقات', '${_attachedFiles.length} ملف'),
+                _reviewRow(RequestFormStrings.reviewPillar, _pillar?.titleAr ?? RequestFormStrings.noValue),
+                _reviewRow(RequestFormStrings.reviewTitle, _titleController.text),
+                _reviewRow(RequestFormStrings.reviewDescription,
+                    _descController.text.isEmpty ? RequestFormStrings.noValue : _descController.text),
+                _reviewRow(RequestFormStrings.priorityLabel, RequestFormStrings.priorityDisplay(_priority)),
+                _reviewRow(RequestFormStrings.reviewAttachments, RequestFormStrings.filesCount(_attachedFiles.length)),
               ],
             ),
           ),
@@ -261,7 +263,12 @@ class _StepIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const labels = ['القسم', 'التفاصيل', 'المرفقات', 'المراجعة'];
+    final labels = [
+      RequestFormStrings.stepPillar,
+      RequestFormStrings.stepDetails,
+      RequestFormStrings.stepAttachments,
+      RequestFormStrings.stepReview,
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
