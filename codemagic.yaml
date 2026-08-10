@@ -41,5 +41,5 @@ workflows:
         script: |
           echo $FIREBASE_SERVICE_ACCOUNT > /tmp/firebase_key.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase_key.json
-          npm install -g firebase-tools
+          npm install -g firebase-tools || true
           firebase deploy --only hosting --project dsba-pr-app --non-interactive
