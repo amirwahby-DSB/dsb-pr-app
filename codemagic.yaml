@@ -28,6 +28,9 @@ workflows:
       groups:
         - firebase
     scripts:
+      - name: Generate web project files
+        script: |
+          flutter create . --platforms=web
       - name: Get Flutter packages
         script: |
           flutter packages pub get
