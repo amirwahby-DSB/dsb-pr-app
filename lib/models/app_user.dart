@@ -1,5 +1,4 @@
 enum UserRole { faculty, staff, prStaff, prAdmin, leadership }
-
 extension UserRoleX on UserRole {
   String get id {
     switch (this) {
@@ -15,14 +14,11 @@ extension UserRoleX on UserRole {
         return 'leadership';
     }
   }
-
   /// Only pr_admin and leadership can see the Executive Dashboard (Module C).
   bool get canViewDashboard => this == UserRole.prAdmin || this == UserRole.leadership;
-
   /// Only pr_staff and pr_admin can triage/assign tickets.
   bool get canManageRequests => this == UserRole.prStaff || this == UserRole.prAdmin;
 }
-
 class AppUser {
   final String userId;
   final String fullName;
@@ -31,7 +27,6 @@ class AppUser {
   final String? phone;
   final UserRole role;
   final String preferredLanguage; // 'ar' | 'de' | 'en'
-
   const AppUser({
     required this.userId,
     required this.fullName,
@@ -41,7 +36,6 @@ class AppUser {
     required this.role,
     this.preferredLanguage = 'ar',
   });
-
   factory AppUser.fromJson(Map<String, dynamic> json) => AppUser(
         userId: json['userId'] as String,
         fullName: json['fullName'] as String,
