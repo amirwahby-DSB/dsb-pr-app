@@ -65,6 +65,66 @@ class MockDataService {
         ),
       ];
 
+  /// All requests across every requester and pillar — used for
+  /// management reporting (daily/monthly/yearly/half-yearly PDF export).
+  /// Replace with a real backend query (e.g. GET /requests?from=&to=)
+  /// once the API is available; the return type stays the same.
+  List<PRRequest> getAllRequests() => [
+        ...getMyRequests(),
+        PRRequest(
+          requestId: 'PR-2026-00150',
+          pillar: Pillar.digitalMediaIdentity,
+          serviceType: 'social_media_post',
+          title: 'منشور تهنئة بمناسبة اليوم الوطني',
+          description: 'تصميم ونشر على حسابات المدرسة الرسمية.',
+          requesterId: 'u-002',
+          assignedToId: 'u-000',
+          status: RequestStatus.completed,
+          createdAt: DateTime.now().subtract(const Duration(days: 3)),
+        ),
+        PRRequest(
+          requestId: 'PR-2026-00151',
+          pillar: Pillar.logisticsFieldTrips,
+          serviceType: 'field_trip_transport',
+          title: 'ترتيب مواصلات رحلة المتحف المصري',
+          description: 'حافلتان لطلاب الصف السابع.',
+          requesterId: 'u-003',
+          status: RequestStatus.awaitingInfo,
+          createdAt: DateTime.now().subtract(const Duration(days: 20)),
+        ),
+        PRRequest(
+          requestId: 'PR-2026-00152',
+          pillar: Pillar.publicRelationsPartnerships,
+          serviceType: 'partner_meeting',
+          title: 'اجتماع تنسيق مع الجهة الشريكة',
+          description: 'مناقشة برنامج التبادل الطلابي للفصل القادم.',
+          requesterId: 'u-000',
+          status: RequestStatus.inProgress,
+          createdAt: DateTime.now().subtract(const Duration(days: 45)),
+        ),
+        PRRequest(
+          requestId: 'PR-2026-00153',
+          pillar: Pillar.printingOperations,
+          serviceType: 'certificate_printing',
+          title: 'طباعة شهادات تقدير لحفل نهاية العام',
+          description: '200 شهادة، تصميم ذهبي فاخر.',
+          requesterId: 'u-002',
+          assignedToId: 'u-000',
+          status: RequestStatus.completed,
+          createdAt: DateTime.now().subtract(const Duration(days: 95)),
+        ),
+        PRRequest(
+          requestId: 'PR-2026-00154',
+          pillar: Pillar.eventManagement,
+          serviceType: 'open_day',
+          title: 'تنظيم يوم مفتوح لأولياء الأمور الجدد',
+          description: 'فعالية تعريفية بالمدرسة ومرافقها.',
+          requesterId: 'u-003',
+          status: RequestStatus.cancelled,
+          createdAt: DateTime.now().subtract(const Duration(days: 200)),
+        ),
+      ];
+
   List<ChatMessage> getMessagesForThread(String threadId) => [
         ChatMessage(
           messageId: 'm1',
