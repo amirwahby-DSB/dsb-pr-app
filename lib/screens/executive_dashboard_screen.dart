@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
+import '../models/app_user.dart';
 import '../services/mock_data_service.dart';
 import '../services/report_generator.dart';
 import '../theme/app_theme.dart';
