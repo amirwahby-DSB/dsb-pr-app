@@ -61,6 +61,12 @@ class ExecutiveDashboardStrings {
     AppLanguage.en => 'Export PDF Report',
     AppLanguage.de => 'PDF-Bericht exportieren',
   };
+  static String get dailyReport => switch (_lang) {
+    AppLanguage.ar => 'تقرير يومي',
+    AppLanguage.en => 'Daily Report',
+    AppLanguage.de => 'Tagesbericht',
+  };
+
   static String get weeklyReport => switch (_lang) {
     AppLanguage.ar => 'تقرير أسبوعي',
     AppLanguage.en => 'Weekly Report',
