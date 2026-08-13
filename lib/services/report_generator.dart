@@ -1,5 +1,6 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'dart:typed_data';
 import '../models/pr_request.dart';
 import '../services/locale_service.dart';
 
@@ -58,7 +59,7 @@ class ReportGenerator {
   /// Builds the PDF document bytes for the given period.
   /// [allRequests] should come from MockDataService.instance.getAllRequests()
   /// (or a real backend call once wired up).
-  static Future<List<int>> buildReport({
+  static Future<Uint8List> buildReport({
     required List<PRRequest> allRequests,
     required ReportPeriod period,
   }) async {
