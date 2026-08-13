@@ -2,27 +2,23 @@ name: dsba_pr_portal
 description: DSBA PR & Operations Portal — Deutsche Schule der Borromäerinnen Alexandria
 publish_to: 'none'
 version: 1.0.0+1
-
 environment:
   sdk: '>=3.3.0 <4.0.0'
-
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
+  pdf: ^3.10.0                # client-side PDF report generation (Module C)
+  printing: ^5.11.0
   # Recommended additions when wiring a real backend:
   # dio: ^5.4.0                # REST client
   # firebase_core / cloud_firestore / firebase_messaging  # if using Firebase
   # flutter_localizations:
   #   sdk: flutter              # for full ar/de/en localization
-  # pdf: ^3.10.0                # client-side PDF report generation (Module C)
-  # printing: ^5.11.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
-
 flutter:
   uses-material-design: true
   assets:
