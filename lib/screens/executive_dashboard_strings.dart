@@ -66,7 +66,6 @@ class ExecutiveDashboardStrings {
     AppLanguage.en => 'Daily Report',
     AppLanguage.de => 'Tagesbericht',
   };
-
   static String get weeklyReport => switch (_lang) {
     AppLanguage.ar => 'تقرير أسبوعي',
     AppLanguage.en => 'Weekly Report',
@@ -82,13 +81,16 @@ class ExecutiveDashboardStrings {
     AppLanguage.en => 'Yearly Report',
     AppLanguage.de => 'Jahresbericht',
   };
-
+  static String get halfYearlyReport => switch (_lang) {
+    AppLanguage.ar => 'تقرير نصف سنوي',
+    AppLanguage.en => 'Half-Yearly Report',
+    AppLanguage.de => 'Halbjahresbericht',
+  };
   static String get accessDeniedTitle => switch (_lang) {
     AppLanguage.ar => 'غير مصرح لك بالدخول',
     AppLanguage.en => 'Access Denied',
     AppLanguage.de => 'Zugriff verweigert',
   };
-
   static String get accessDeniedBody => switch (_lang) {
     AppLanguage.ar => 'هذه الصفحة متاحة فقط لمسؤولي العلاقات العامة والإدارة العليا.',
     AppLanguage.en => 'This page is available only to PR administrators and leadership.',
