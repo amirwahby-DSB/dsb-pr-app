@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:printing/printing.dart';
 import '../services/mock_data_service.dart';
+import '../services/report_generator.dart';
 import '../theme/app_theme.dart';
 import '../widgets/kpi_card.dart';
 import 'executive_dashboard_strings.dart';
@@ -9,6 +11,39 @@ class ExecutiveDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = MockDataService.instance.currentUser;
+
+    if (!currentUser.role.canViewDashboard) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(ExecutiveDashboardStrings.title),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.lock_outline, size: 56, color: DSBAColors.textMuted),
+                const SizedBox(height: 16),
+                Text(
+                  ExecutiveDashboardStrings.accessDeniedTitle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  ExecutiveDashboardStrings.accessDeniedBody,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 13, color: DSBAColors.textMuted),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     final kpis = MockDataService.instance.getKpiSnapshot();
 
     return Scaffold(
@@ -103,26 +138,41 @@ class ExecutiveDashboardScreen extends StatelessWidget {
                   style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
               const SizedBox(height: 12),
               ListTile(
+                leading: const Icon(Icons.today_outlined),
+                title: Text(ExecutiveDashboardStrings.dailyReport),
+                onTap: () => _generateAndShow(context, ReportPeriod.daily),
+              ),
+              ListTile(
                 leading: const Icon(Icons.calendar_view_week),
                 title: Text(ExecutiveDashboardStrings.weeklyReport),
-                onTap: () => Navigator.pop(context),
+                onTap: () => _generateAndShow(context, ReportPeriod.weekly),
               ),
               ListTile(
                 leading: const Icon(Icons.calendar_view_month),
                 title: Text(ExecutiveDashboardStrings.monthlyReport),
-                onTap: () => Navigator.pop(context),
+                onTap: () => _generateAndShow(context, ReportPeriod.monthly),
+              ),
+              ListTile(
+                leading: const Icon(Icons.date_range_outlined),
+                title: Text(ExecutiveDashboardStrings.halfYearlyReport),
+                onTap: () => _generateAndShow(context, ReportPeriod.halfYearly),
               ),
               ListTile(
                 leading: const Icon(Icons.event_note),
                 title: Text(ExecutiveDashboardStrings.yearlyReport),
-                onTap: () => Navigator.pop(context),
+                onTap: () => _generateAndShow(context, ReportPeriod.yearly),
               ),
-              // TODO: call backend endpoint POST /reports/export
-              // with { period } → returns AnalyticsReport.exportUrl (PDF)
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _generateAndShow(BuildContext context, ReportPeriod period) async {
+    Navigator.pop(context);
+    final allRequests = MockDataService.instance.getAllRequests();
+    final bytes = await ReportGenerator.buildReport(allRequests: allRequests, period: period);
+    await Printing.layoutPdf(onLayout: (_) async => bytes);
   }
 }
