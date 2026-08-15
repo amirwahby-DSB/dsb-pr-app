@@ -52,18 +52,20 @@ class RootShell extends StatefulWidget {
 class _RootShellState extends State<RootShell> {
   int _index = 0;
 
-  // NOT const: these screens read AppStrings/locale-dependent text at
-  // build time. A const list is built once and never rebuilt, so it
-  // would keep showing the language that was active on first launch
-  // even after the user switches languages. Using a getter rebuilds
-  // the tab widgets fresh every time RootShell rebuilds (e.g. on
-  // locale change), so translated text updates correctly.
+  // IMPORTANT: none of these are `const`. Each screen reads
+  // AppStrings/locale-dependent text at build time. A const widget
+  // is a single canonical instance reused forever — Flutter skips
+  // calling build() again on an unchanged const instance even if
+  // the surrounding list is rebuilt. Creating a genuinely new
+  // instance every time (no const) forces Flutter to rebuild each
+  // tab whenever RootShell rebuilds (e.g. on locale change), so
+  // translated text updates correctly across every tab.
   List<Widget> get _tabs => [
-        const DashboardScreen(),
-        const ServicesCatalogScreen(),
-        const RequestsListScreen(),
-        const ChatScreen(threadId: 'general_pr_office'),
-        const SettingsScreen(),
+        DashboardScreen(),
+        ServicesCatalogScreen(),
+        RequestsListScreen(),
+        ChatScreen(threadId: 'general_pr_office'),
+        SettingsScreen(),
       ];
 
   @override
