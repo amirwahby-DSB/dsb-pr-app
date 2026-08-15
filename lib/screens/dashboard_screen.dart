@@ -12,6 +12,8 @@ import 'request_tracker_screen.dart';
 import 'requests_list_screen.dart';
 import 'services_catalog_screen.dart';
 import 'chat_screen.dart';
+import 'announcements_screen.dart';
+import 'announcements_strings.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -21,6 +23,7 @@ class DashboardScreen extends StatelessWidget {
     final data = MockDataService.instance;
     final user = data.currentUser;
     final requests = data.getMyRequests();
+    final announcements = data.getAnnouncements();
     final lang = LocaleService.instance.language;
 
     return Scaffold(
@@ -115,6 +118,12 @@ class DashboardScreen extends StatelessWidget {
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: (_) => ChatScreen(threadId: 'general_pr_office'))),
                 ),
+                _QuickAction(
+                  icon: Icons.campaign_outlined,
+                  label: AppStrings.departmentAnnouncements,
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const AnnouncementsScreen())),
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -145,16 +154,45 @@ class DashboardScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Announcements feed
-            Text(AppStrings.latestAnnouncements, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
-            const SizedBox(height: 10),
-            const Card(
-              child: ListTile(
-                leading: Icon(Icons.campaign_outlined, color: DSBAColors.primaryCrimson),
-                title: Text('حفل التخرج السنوي – مكتبة الإسكندرية'),
-                subtitle: Text('التخطيط جارٍ الموعد المبدئي يونيو 2027'),
-              ),
+            // Announcements feed — shows the most recent announcement,
+            // tap to open the full Department Announcements screen.
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppStrings.latestAnnouncements,
+                    style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                GestureDetector(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const AnnouncementsScreen())),
+                  child: Text(AppStrings.viewAll,
+                      style: const TextStyle(color: DSBAColors.primaryCrimson, fontSize: 12)),
+                ),
+              ],
             ),
+            const SizedBox(height: 10),
+            if (announcements.isEmpty)
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.campaign_outlined, color: DSBAColors.primaryCrimson),
+                  title: Text(AnnouncementsStrings.emptyState),
+                ),
+              )
+            else
+              Card(
+                child: InkWell(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const AnnouncementsScreen())),
+                  child: ListTile(
+                    leading: const Icon(Icons.campaign_outlined, color: DSBAColors.primaryCrimson),
+                    title: Text(announcements.first.title),
+                    subtitle: Text(
+                      announcements.first.body,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
