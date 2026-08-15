@@ -10,6 +10,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   pdf: ^3.10.0                # client-side PDF report generation (Module C)
   printing: ^5.11.0
+  file_picker: ^8.1.2          # image/PDF attachments for Department Announcements
   # Recommended additions when wiring a real backend:
   # dio: ^5.4.0                # REST client
   # firebase_core / cloud_firestore / firebase_messaging  # if using Firebase
