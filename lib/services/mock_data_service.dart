@@ -1,6 +1,7 @@
 import '../models/pr_request.dart';
 import '../models/app_user.dart';
 import '../models/chat_message.dart';
+import '../models/announcement.dart';
 
 /// Local mock implementation of the data layer.
 /// Replace method bodies with REST (Dio/http) or Firestore calls —
@@ -164,4 +165,30 @@ class MockDataService {
         'visasProcessed': 25,
         'avgResolutionHours': 18.4,
       };
+
+  // Department Announcements — in-memory mock store. Only PR admins and
+  // leadership can post (enforced in the UI via role.canPostAnnouncements),
+  // but this layer itself doesn't check permissions — that's the caller's
+  // job, same as the rest of this mock service. Replace with a real
+  // backend (e.g. GET/POST /announcements) once available.
+  final List<Announcement> _announcements = [
+    Announcement(
+      id: 'ann-001',
+      title: 'حفل التخرج السنوي – مكتبة الإسكندرية',
+      body: 'التخطيط جارٍ، الموعد المبدئي يونيو 2027. سيتم مشاركة التفاصيل الكاملة قريباً.',
+      authorName: 'أمير وهبي — العلاقات العامة',
+      createdAt: DateTime.now().subtract(const Duration(days: 2)),
+    ),
+  ];
+
+  /// Most recent announcements first.
+  List<Announcement> getAnnouncements() {
+    final sorted = [..._announcements];
+    sorted.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return sorted;
+  }
+
+  void addAnnouncement(Announcement announcement) {
+    _announcements.add(announcement);
+  }
 }
