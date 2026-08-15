@@ -7,33 +7,26 @@ import 'screens/services_catalog_screen.dart';
 import 'screens/requests_list_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/settings_screen.dart';
-
 void main() => runApp(const DSBAApp());
-
 class DSBAApp extends StatefulWidget {
   const DSBAApp({super.key});
-
   @override
   State<DSBAApp> createState() => _DSBAAppState();
 }
-
 class _DSBAAppState extends State<DSBAApp> {
   @override
   void initState() {
     super.initState();
     LocaleService.instance.addListener(_onLocaleChanged);
   }
-
   @override
   void dispose() {
     LocaleService.instance.removeListener(_onLocaleChanged);
     super.dispose();
   }
-
   void _onLocaleChanged() {
     setState(() {});
   }
-
   @override
   Widget build(BuildContext context) {
     final lang = LocaleService.instance.language;
@@ -42,7 +35,6 @@ class _DSBAAppState extends State<DSBAApp> {
       AppLanguage.en => 'en',
       AppLanguage.de => 'de',
     };
-
     return MaterialApp(
       title: 'DSBA PR & Operations Portal',
       debugShowCheckedModeBanner: false,
@@ -52,24 +44,27 @@ class _DSBAAppState extends State<DSBAApp> {
     );
   }
 }
-
 class RootShell extends StatefulWidget {
   const RootShell({super.key});
-
   @override
   State<RootShell> createState() => _RootShellState();
 }
-
 class _RootShellState extends State<RootShell> {
   int _index = 0;
 
-  final _tabs = const [
-    DashboardScreen(),
-    ServicesCatalogScreen(),
-    RequestsListScreen(),
-    ChatScreen(threadId: 'general_pr_office'),
-    SettingsScreen(),
-  ];
+  // NOT const: these screens read AppStrings/locale-dependent text at
+  // build time. A const list is built once and never rebuilt, so it
+  // would keep showing the language that was active on first launch
+  // even after the user switches languages. Using a getter rebuilds
+  // the tab widgets fresh every time RootShell rebuilds (e.g. on
+  // locale change), so translated text updates correctly.
+  List<Widget> get _tabs => [
+        const DashboardScreen(),
+        const ServicesCatalogScreen(),
+        const RequestsListScreen(),
+        const ChatScreen(threadId: 'general_pr_office'),
+        const SettingsScreen(),
+      ];
 
   @override
   Widget build(BuildContext context) {
