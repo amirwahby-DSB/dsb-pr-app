@@ -18,6 +18,8 @@ extension UserRoleX on UserRole {
   bool get canViewDashboard => this == UserRole.prAdmin || this == UserRole.leadership;
   /// Only pr_staff and pr_admin can triage/assign tickets.
   bool get canManageRequests => this == UserRole.prStaff || this == UserRole.prAdmin;
+  /// Only pr_admin and leadership can publish Department Announcements.
+  bool get canPostAnnouncements => this == UserRole.prAdmin || this == UserRole.leadership;
 }
 class AppUser {
   final String userId;
