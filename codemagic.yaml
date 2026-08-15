@@ -36,7 +36,7 @@ workflows:
           flutter packages pub get
       - name: Build web
         script: |
-          flutter build web --release
+          flutter build web --release --no-tree-shake-icons
       - name: Deploy to Firebase Hosting
         script: |
           echo $FIREBASE_SERVICE_ACCOUNT > /tmp/firebase_key.json
