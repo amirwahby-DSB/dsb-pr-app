@@ -9,7 +9,7 @@ import 'request_form_screen.dart';
 import 'request_tracker_screen.dart';
 
 /// Module B — full ticket list with Active | Completed | All tabs,
-/// referenced from the bottom nav "الطلبات" tab.
+/// referenced from the bottom nav tab.
 class RequestsListScreen extends StatefulWidget {
   const RequestsListScreen({super.key});
 
@@ -55,13 +55,13 @@ class _RequestsListScreenState extends State<RequestsListScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('طلباتي'),
+        title: Text(_Strings.myRequestsTitle),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'نشطة'),
-            Tab(text: 'مكتملة'),
-            Tab(text: 'الكل'),
+          tabs: [
+            Tab(text: _Strings.tabActive),
+            Tab(text: _Strings.tabCompleted),
+            Tab(text: _Strings.tabAll),
           ],
         ),
       ),
@@ -72,15 +72,18 @@ class _RequestsListScreenState extends State<RequestsListScreen>
         ),
         backgroundColor: DSBAColors.primaryCrimson,
         icon: const Icon(Icons.add),
-        label: const Text('طلب جديد'),
+        label: Text(_Strings.newRequest),
       ),
       body: TabBarView(
         controller: _tabController,
         children: List.generate(3, (tabIndex) {
           final items = _filtered(all, tabIndex);
           if (items.isEmpty) {
-            return const Center(
-              child: Text('لا توجد طلبات هنا حالياً', style: TextStyle(color: DSBAColors.textMuted)),
+            return Center(
+              child: Text(
+                _Strings.noRequestsHere,
+                style: const TextStyle(color: DSBAColors.textMuted),
+              ),
             );
           }
           return ListView.separated(
@@ -125,6 +128,9 @@ class _RequestListTile extends StatelessWidget {
               Text(request.title,
                   style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
               const SizedBox(height: 4),
+              // NOTE: request.pillar.titleAr is a model-level field (not a UI string).
+              // Fixing it needs a titleEn/titleDe getter on the PillarType model itself —
+              // flagging it, not touching it here.
               Text(request.pillar.titleAr,
                   style: const TextStyle(fontSize: 12, color: DSBAColors.textMuted)),
               const SizedBox(height: 8),
@@ -133,7 +139,7 @@ class _RequestListTile extends StatelessWidget {
                   const Icon(Icons.schedule, size: 13, color: DSBAColors.textMuted),
                   const SizedBox(width: 4),
                   Text(
-                    'أُنشئ: ${request.createdAt.toString().split(' ').first}',
+                    '${_Strings.createdOn}: ${request.createdAt.toString().split(' ').first}',
                     style: const TextStyle(fontSize: 11, color: DSBAColors.textMuted),
                   ),
                 ],
@@ -145,8 +151,10 @@ class _RequestListTile extends StatelessWidget {
     );
   }
 }
+
 class _Strings {
   static AppLanguage get _lang => LocaleService.instance.language;
+
   static String get myRequestsTitle => switch (_lang) {
         AppLanguage.ar => 'طلباتي',
         AppLanguage.en => 'My Requests',
@@ -172,14 +180,20 @@ class _Strings {
       };
 
   static String get noRequestsHere => switch (_lang) {
-        AppLanguage.ar => 'لا توجد طلبات هنا',
-        AppLanguage.en => 'No requests here',
-        AppLanguage.de => 'Keine Anträge hier',
+        AppLanguage.ar => 'لا توجد طلبات هنا حالياً',
+        AppLanguage.en => 'No requests here yet',
+        AppLanguage.de => 'Derzeit keine Anträge',
       };
 
   static String get createdOn => switch (_lang) {
-        AppLanguage.ar => 'بتاريخ',
+        AppLanguage.ar => 'أُنشئ',
         AppLanguage.en => 'Created',
         AppLanguage.de => 'Erstellt',
       };
-  }
+
+  static String get newRequest => switch (_lang) {
+        AppLanguage.ar => 'طلب جديد',
+        AppLanguage.en => 'New Request',
+        AppLanguage.de => 'Neuer Antrag',
+      };
+}
