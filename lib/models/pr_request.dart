@@ -60,6 +60,23 @@ extension PillarX on Pillar {
     }
   }
 
+  String get titleDe {
+    switch (this) {
+      case Pillar.publicRelationsPartnerships:
+        return 'PR & Partnerschaften';
+      case Pillar.consularVisas:
+        return 'Konsularische Angelegenheiten & Visa';
+      case Pillar.logisticsFieldTrips:
+        return 'Logistik & Ausflüge';
+      case Pillar.digitalMediaIdentity:
+        return 'Digitale Medien & Identität';
+      case Pillar.eventManagement:
+        return 'Veranstaltungsmanagement';
+      case Pillar.printingOperations:
+        return 'Druckzentrum';
+    }
+  }
+
   String get iconAsset {
     switch (this) {
       case Pillar.publicRelationsPartnerships:
