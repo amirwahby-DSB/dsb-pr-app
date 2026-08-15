@@ -56,4 +56,28 @@ class AnnouncementsStrings {
         AppLanguage.en => 'By $name',
         AppLanguage.de => 'Von $name',
       };
+
+  static String get attachFile => switch (_lang) {
+        AppLanguage.ar => 'إرفاق صورة أو PDF',
+        AppLanguage.en => 'Attach Image or PDF',
+        AppLanguage.de => 'Bild oder PDF anhängen',
+      };
+
+  static String get removeAttachment => switch (_lang) {
+        AppLanguage.ar => 'إزالة المرفق',
+        AppLanguage.en => 'Remove attachment',
+        AppLanguage.de => 'Anhang entfernen',
+      };
+
+  static String get viewAttachment => switch (_lang) {
+        AppLanguage.ar => 'عرض المرفق',
+        AppLanguage.en => 'View attachment',
+        AppLanguage.de => 'Anhang ansehen',
+      };
+
+  static String get unsupportedFileType => switch (_lang) {
+        AppLanguage.ar => 'الملف المختار غير مدعوم. الأنواع المسموحة: JPG, PNG, PDF',
+        AppLanguage.en => 'Unsupported file type. Allowed: JPG, PNG, PDF',
+        AppLanguage.de => 'Nicht unterstützter Dateityp. Erlaubt: JPG, PNG, PDF',
+      };
 }
