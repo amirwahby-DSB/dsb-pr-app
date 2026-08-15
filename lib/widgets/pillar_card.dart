@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/pr_request.dart';
+import '../services/locale_service.dart';
 import '../theme/app_theme.dart';
-
 class PillarCard extends StatelessWidget {
   final Pillar pillar;
   final VoidCallback onTap;
-
   const PillarCard({super.key, required this.pillar, required this.onTap});
-
   IconData _iconFor(Pillar p) {
     switch (p) {
       case Pillar.publicRelationsPartnerships:
@@ -22,6 +20,18 @@ class PillarCard extends StatelessWidget {
         return Icons.celebration_outlined;
       case Pillar.printingOperations:
         return Icons.print_outlined;
+    }
+  }
+
+  /// Returns the pillar's title in the currently selected app language.
+  String _localizedTitle(Pillar p) {
+    switch (LocaleService.instance.language) {
+      case AppLanguage.ar:
+        return p.titleAr;
+      case AppLanguage.en:
+        return p.titleEn;
+      case AppLanguage.de:
+        return p.titleDe;
     }
   }
 
@@ -47,15 +57,10 @@ class PillarCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                pillar.titleAr,
+                _localizedTitle(pillar),
                 style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                pillar.titleEn,
-                style: const TextStyle(color: DSBAColors.textMuted, fontSize: 11),
               ),
             ],
           ),
