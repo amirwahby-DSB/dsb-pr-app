@@ -16,7 +16,7 @@ class MockDataService {
     fullName: 'Amir Wahby',
     fullNameAr: 'أمير وهبي',
     email: 'p.r@dsb-alexandria.de',
-    role: UserRole.prAdmin,
+    role: UserRole.staff,
   );
 
   final AppUser prManager = const AppUser(
