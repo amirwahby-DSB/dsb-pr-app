@@ -1,3 +1,5 @@
+import '../services/locale_service.dart';
+
 /// The six operational pillars from the DSBA PR handbook.
 enum Pillar {
   publicRelationsPartnerships,
@@ -77,6 +79,19 @@ extension PillarX on Pillar {
     }
   }
 
+  /// Locale-aware title — use this in the UI instead of titleAr/titleEn/titleDe
+  /// directly, so the pillar name follows the app's current language.
+  String get title {
+    switch (LocaleService.instance.language) {
+      case AppLanguage.ar:
+        return titleAr;
+      case AppLanguage.en:
+        return titleEn;
+      case AppLanguage.de:
+        return titleDe;
+    }
+  }
+
   String get iconAsset {
     switch (this) {
       case Pillar.publicRelationsPartnerships:
@@ -125,6 +140,48 @@ extension RequestStatusX on RequestStatus {
         return 'مكتمل';
       case RequestStatus.cancelled:
         return 'ملغى';
+    }
+  }
+
+  String get labelEn {
+    switch (this) {
+      case RequestStatus.pending:
+        return 'Pending';
+      case RequestStatus.inProgress:
+        return 'In Progress';
+      case RequestStatus.awaitingInfo:
+        return 'Awaiting Info';
+      case RequestStatus.completed:
+        return 'Completed';
+      case RequestStatus.cancelled:
+        return 'Cancelled';
+    }
+  }
+
+  String get labelDe {
+    switch (this) {
+      case RequestStatus.pending:
+        return 'Ausstehend';
+      case RequestStatus.inProgress:
+        return 'In Bearbeitung';
+      case RequestStatus.awaitingInfo:
+        return 'Informationen ausstehend';
+      case RequestStatus.completed:
+        return 'Abgeschlossen';
+      case RequestStatus.cancelled:
+        return 'Storniert';
+    }
+  }
+
+  /// Locale-aware label — use this in the UI instead of labelAr directly.
+  String get label {
+    switch (LocaleService.instance.language) {
+      case AppLanguage.ar:
+        return labelAr;
+      case AppLanguage.en:
+        return labelEn;
+      case AppLanguage.de:
+        return labelDe;
     }
   }
 }
