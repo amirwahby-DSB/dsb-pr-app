@@ -128,10 +128,7 @@ class _RequestListTile extends StatelessWidget {
               Text(request.title,
                   style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
               const SizedBox(height: 4),
-              // NOTE: request.pillar.titleAr is a model-level field (not a UI string).
-              // Fixing it needs a titleEn/titleDe getter on the PillarType model itself —
-              // flagging it, not touching it here.
-              Text(request.pillar.titleAr,
+              Text(request.pillar.title,
                   style: const TextStyle(fontSize: 12, color: DSBAColors.textMuted)),
               const SizedBox(height: 8),
               Row(
