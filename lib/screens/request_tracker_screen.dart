@@ -29,7 +29,7 @@ class RequestTrackerScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(request.pillar.titleAr,
+                  Text(request.pillar.title,
                       style: const TextStyle(color: DSBAColors.textMuted, fontSize: 12)),
                   const SizedBox(height: 4),
                   Text(request.title,
@@ -65,7 +65,7 @@ class RequestTrackerScreen extends StatelessWidget {
                               : null,
                         ),
                         const SizedBox(height: 6),
-                        Text(_stages[i].labelAr, style: const TextStyle(fontSize: 10)),
+                        Text(_stages[i].label, style: const TextStyle(fontSize: 10)),
                       ],
                     ),
                     if (!isLast)
