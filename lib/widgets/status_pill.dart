@@ -16,7 +16,7 @@ class StatusPill extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        status.labelAr,
+        status.label,
         style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 11),
       ),
     );
