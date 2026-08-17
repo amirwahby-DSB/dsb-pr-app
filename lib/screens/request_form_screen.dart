@@ -149,8 +149,7 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
               value: p,
               groupValue: _pillar,
               onChanged: (v) => setState(() => _pillar = v),
-              title: Text(p.titleAr),
-              subtitle: Text(p.titleEn),
+              title: Text(p.title),
               activeColor: DSBAColors.primaryCrimson,
             )),
       ],
@@ -226,7 +225,7 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _reviewRow(RequestFormStrings.reviewPillar, _pillar?.titleAr ?? RequestFormStrings.noValue),
+                _reviewRow(RequestFormStrings.reviewPillar, _pillar?.title ?? RequestFormStrings.noValue),
                 _reviewRow(RequestFormStrings.reviewTitle, _titleController.text),
                 _reviewRow(RequestFormStrings.reviewDescription,
                     _descController.text.isEmpty ? RequestFormStrings.noValue : _descController.text),
