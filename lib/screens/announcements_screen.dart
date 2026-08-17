@@ -78,12 +78,15 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(a.body, style: const TextStyle(fontSize: 13)),
-                        if (a.attachmentBytes != null) ...[
+                        if (a.attachments.isNotEmpty) ...[
                           const SizedBox(height: 12),
-                          _AttachmentPreview(
-                            bytes: a.attachmentBytes!,
-                            name: a.attachmentName ?? '',
-                            type: a.attachmentType!,
+                          Column(
+                            children: [
+                              for (final att in a.attachments) ...[
+                                _AttachmentPreview(attachment: att),
+                                if (att != a.attachments.last) const SizedBox(height: 8),
+                              ],
+                            ],
                           ),
                         ],
                         const SizedBox(height: 10),
@@ -114,24 +117,23 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
   }
 }
 
-/// Read-only preview of an attachment: inline image, or a tappable
+/// Read-only preview of a single attachment: inline image, or a tappable
 /// row for a PDF that opens it via the `printing` package's viewer.
 class _AttachmentPreview extends StatelessWidget {
-  final Uint8List bytes;
-  final String name;
-  final AnnouncementAttachmentType type;
-  const _AttachmentPreview({required this.bytes, required this.name, required this.type});
+  final AnnouncementAttachment attachment;
+  const _AttachmentPreview({required this.attachment});
 
   @override
   Widget build(BuildContext context) {
-    if (type == AnnouncementAttachmentType.image) {
+    if (attachment.type == AnnouncementAttachmentType.image) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Image.memory(bytes, height: 160, width: double.infinity, fit: BoxFit.cover),
+        child: Image.memory(attachment.bytes,
+            height: 160, width: double.infinity, fit: BoxFit.cover),
       );
     }
     return InkWell(
-      onTap: () => Printing.layoutPdf(onLayout: (_) async => bytes),
+      onTap: () => Printing.layoutPdf(onLayout: (_) async => attachment.bytes),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
@@ -143,7 +145,7 @@ class _AttachmentPreview extends StatelessWidget {
             const Icon(Icons.picture_as_pdf_outlined, color: DSBAColors.primaryCrimson),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(name.isEmpty ? 'PDF' : name,
+              child: Text(attachment.name.isEmpty ? 'PDF' : attachment.name,
                   maxLines: 1, overflow: TextOverflow.ellipsis),
             ),
             Text(AnnouncementsStrings.viewAttachment,
@@ -168,49 +170,60 @@ class _ComposeSheet extends StatefulWidget {
 class _ComposeSheetState extends State<_ComposeSheet> {
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
-  Uint8List? _attachmentBytes;
-  String? _attachmentName;
-  AnnouncementAttachmentType? _attachmentType;
+  final List<AnnouncementAttachment> _attachments = [];
   String? _error;
 
-  Future<void> _pickAttachment() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
-      withData: true,
-    );
-    if (result == null || result.files.isEmpty) return;
-    final file = result.files.single;
-    final bytes = file.bytes;
-    if (bytes == null) return;
-
-    final ext = (file.extension ?? '').toLowerCase();
-    AnnouncementAttachmentType? type;
-    if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-      type = AnnouncementAttachmentType.image;
-    } else if (ext == 'pdf') {
-      type = AnnouncementAttachmentType.pdf;
-    }
-
-    if (type == null) {
-      setState(() => _error = AnnouncementsStrings.unsupportedFileType);
+  Future<void> _pickAttachments() async {
+    if (_attachments.length >= AnnouncementsStrings.maxAttachments) {
+      setState(() => _error = AnnouncementsStrings.maxAttachmentsReached);
       return;
     }
 
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+      allowMultiple: true,
+      withData: true,
+    );
+    if (result == null || result.files.isEmpty) return;
+
+    final newAttachments = <AnnouncementAttachment>[];
+    var hadUnsupported = false;
+
+    for (final file in result.files) {
+      final bytes = file.bytes;
+      if (bytes == null) continue;
+
+      final ext = (file.extension ?? '').toLowerCase();
+      AnnouncementAttachmentType? type;
+      if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+        type = AnnouncementAttachmentType.image;
+      } else if (ext == 'pdf') {
+        type = AnnouncementAttachmentType.pdf;
+      }
+
+      if (type == null) {
+        hadUnsupported = true;
+        continue;
+      }
+
+      newAttachments.add(AnnouncementAttachment(bytes: bytes, name: file.name, type: type));
+    }
+
+    final remainingSlots = AnnouncementsStrings.maxAttachments - _attachments.length;
+    final accepted = newAttachments.take(remainingSlots).toList();
+    final hitLimit = newAttachments.length > accepted.length;
+
     setState(() {
-      _attachmentBytes = bytes;
-      _attachmentName = file.name;
-      _attachmentType = type;
-      _error = null;
+      _attachments.addAll(accepted);
+      _error = hitLimit
+          ? AnnouncementsStrings.maxAttachmentsReached
+          : (hadUnsupported ? AnnouncementsStrings.unsupportedFileType : null);
     });
   }
 
-  void _removeAttachment() {
-    setState(() {
-      _attachmentBytes = null;
-      _attachmentName = null;
-      _attachmentType = null;
-    });
+  void _removeAttachmentAt(int index) {
+    setState(() => _attachments.removeAt(index));
   }
 
   void _publish() {
@@ -225,9 +238,7 @@ class _ComposeSheetState extends State<_ComposeSheet> {
         body: body,
         authorName: currentUser.fullNameAr,
         createdAt: DateTime.now(),
-        attachmentBytes: _attachmentBytes,
-        attachmentName: _attachmentName,
-        attachmentType: _attachmentType,
+        attachments: List.unmodifiable(_attachments),
       ),
     );
     Navigator.pop(context);
@@ -278,33 +289,43 @@ class _ComposeSheetState extends State<_ComposeSheet> {
                 ),
               ),
               const SizedBox(height: 12),
-              if (_attachmentBytes == null)
-                OutlinedButton.icon(
-                  onPressed: _pickAttachment,
-                  icon: const Icon(Icons.attach_file_outlined),
-                  label: Text(AnnouncementsStrings.attachFile),
-                )
-              else
-                Row(
-                  children: [
-                    Icon(
-                      _attachmentType == AnnouncementAttachmentType.image
-                          ? Icons.image_outlined
-                          : Icons.picture_as_pdf_outlined,
-                      color: DSBAColors.primaryCrimson,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(_attachmentName ?? '',
-                          maxLines: 1, overflow: TextOverflow.ellipsis),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close, size: 18),
-                      tooltip: AnnouncementsStrings.removeAttachment,
-                      onPressed: _removeAttachment,
-                    ),
-                  ],
+              if (_attachments.isNotEmpty) ...[
+                Text(
+                  AnnouncementsStrings.attachmentsCount(_attachments.length),
+                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
                 ),
+                const SizedBox(height: 8),
+                for (var i = 0; i < _attachments.length; i++) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          _attachments[i].type == AnnouncementAttachmentType.image
+                              ? Icons.image_outlined
+                              : Icons.picture_as_pdf_outlined,
+                          color: DSBAColors.primaryCrimson,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(_attachments[i].name,
+                              maxLines: 1, overflow: TextOverflow.ellipsis),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close, size: 18),
+                          tooltip: AnnouncementsStrings.removeAttachment,
+                          onPressed: () => _removeAttachmentAt(i),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+              OutlinedButton.icon(
+                onPressed: _pickAttachments,
+                icon: const Icon(Icons.attach_file_outlined),
+                label: Text(AnnouncementsStrings.attachFile),
+              ),
               if (_error != null) ...[
                 const SizedBox(height: 6),
                 Text(_error!, style: const TextStyle(color: Colors.red, fontSize: 12)),
