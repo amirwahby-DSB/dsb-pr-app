@@ -13,6 +13,15 @@ class DSBAColors {
   static const Color warning = Color(0xFFF9A825);
   static const Color danger = Color(0xFFC62828);
   static const Color textMuted = Color(0xFF6B6B6B);
+
+  /// Subtle app-wide background gradient — applied once in main.dart
+  /// behind every screen. Kept very light so it never fights with
+  /// text or card contrast; just gives the app a bit of depth instead
+  /// of a flat white/gray page.
+  static const List<Color> backgroundGradient = [
+    Color(0xFFFFFFFF),
+    Color(0xFFF6F1E7),
+  ];
 }
 
 /// Status → color mapping used across Request tracker, list chips, KPI cards.
@@ -37,7 +46,9 @@ class AppTheme {
   static ThemeData light() {
     final base = ThemeData(useMaterial3: true, brightness: Brightness.light, fontFamily: 'Inter');
     return base.copyWith(
-      scaffoldBackgroundColor: DSBAColors.neutralLight,
+      // شفاف عشان الخلفية المتدرجة اللي حطيناها في main.dart تبان
+      // خلف كل شاشة، بدل لون واحد مصمت.
+      scaffoldBackgroundColor: Colors.transparent,
       colorScheme: base.colorScheme.copyWith(
         primary: DSBAColors.primaryCrimson,
         secondary: DSBAColors.accentGold,
@@ -63,8 +74,8 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         color: DSBAColors.surfaceCard,
-        elevation: 1.5,
-        shadowColor: Colors.black.withValues(alpha: 0.08),
+        elevation: 3,
+        shadowColor: Colors.black.withValues(alpha: 0.10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
       ),
