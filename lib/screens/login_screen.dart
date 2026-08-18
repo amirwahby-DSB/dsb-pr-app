@@ -3,7 +3,7 @@ import '../models/app_user.dart';
 import '../services/mock_data_service.dart';
 import '../services/locale_service.dart';
 import '../theme/app_theme.dart';
-import 'dashboard_screen.dart';
+import '../main.dart';
 
 /// Simple "pick a user" screen — not a real password login yet.
 /// Shown first when the app opens; tapping a user takes you to the
@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                 MockDataService.instance.setCurrentUser(u);
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const DashboardScreen()),
+                  MaterialPageRoute(builder: (_) => const RootShell()),
                 );
               },
             ),
