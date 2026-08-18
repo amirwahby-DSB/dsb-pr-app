@@ -11,13 +11,14 @@ class MockDataService {
   MockDataService._();
   static final MockDataService instance = MockDataService._();
 
-  final AppUser currentUser = const AppUser(
-    userId: 'u-001',
-    fullName: 'Amir Wahby',
-    fullNameAr: 'أمير وهبي',
-    email: 'p.r@dsb-alexandria.de',
-    role: UserRole.staff,
-  );
+  // اليوزر الحالي — دلوقتي متغيّر (مش ثابت) عشان شاشة اختيار
+  // الدخول تقدر تغيّره. الافتراضي (قبل ما اليوزر يختار) هو أول
+  // واحد في mockUsers.
+  AppUser currentUser = mockUsers.first;
+
+  void setCurrentUser(AppUser user) {
+    currentUser = user;
+  }
 
   final AppUser prManager = const AppUser(
     userId: 'u-000',
