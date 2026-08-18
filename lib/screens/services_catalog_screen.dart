@@ -29,7 +29,7 @@ class ServicesCatalogScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 14,
                 crossAxisSpacing: 14,
-                childAspectRatio: 0.95,
+                childAspectRatio: 1.15,
                 children: Pillar.values
                     .map((p) => PillarCard(
                           pillar: p,
