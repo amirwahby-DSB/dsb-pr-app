@@ -7,6 +7,7 @@ import 'screens/services_catalog_screen.dart';
 import 'screens/requests_list_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/login_screen.dart';
 void main() => runApp(const DSBAApp());
 class DSBAApp extends StatefulWidget {
   const DSBAApp({super.key});
@@ -40,7 +41,7 @@ class _DSBAAppState extends State<DSBAApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
       locale: Locale(localeCode),
-      home: const RootShell(),
+      home: const LoginScreen(),
     );
   }
 }
@@ -51,7 +52,6 @@ class RootShell extends StatefulWidget {
 }
 class _RootShellState extends State<RootShell> {
   int _index = 0;
-
   // IMPORTANT: none of these are `const`. Each screen reads
   // AppStrings/locale-dependent text at build time. A const widget
   // is a single canonical instance reused forever — Flutter skips
@@ -67,7 +67,6 @@ class _RootShellState extends State<RootShell> {
         ChatScreen(threadId: 'general_pr_office'),
         SettingsScreen(),
       ];
-
   @override
   Widget build(BuildContext context) {
     final isRtl = LocaleService.instance.language == AppLanguage.ar;
