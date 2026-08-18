@@ -103,6 +103,7 @@ class DashboardScreen extends StatelessWidget {
                 _QuickAction(
                   icon: Icons.add_circle_outline,
                   label: AppStrings.newRequest,
+                  accentColor: DSBAColors.accentGold,
                   onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (_) => const RequestFormScreen())),
                 ),
@@ -210,11 +211,23 @@ class _QuickAction extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
-  const _QuickAction({required this.icon, required this.label, required this.onTap});
+  // Optional accent color so specific actions (e.g. "New Request") can
+  // stand out with the gold brand color instead of every action looking
+  // identically crimson. Defaults to crimson for all other actions.
+  final Color accentColor;
+  const _QuickAction({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.accentColor = DSBAColors.primaryCrimson,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      // Explicitly white so every Quick Action card matches — no card
+      // should look unintentionally grey/different from the rest.
+      color: Colors.white,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -222,7 +235,23 @@ class _QuickAction extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Row(
             children: [
-              Icon(icon, color: DSBAColors.primaryCrimson),
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: accentColor.withValues(alpha: accentColor == DSBAColors.accentGold ? 0.22 : 0.10),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                // Gold is too pale to read as an icon color on white, so for
+                // the gold accent we keep the icon dark and let the tinted
+                // gold background carry the color instead (same idea as the
+                // gold avatar + dark icon used in the greeting card above).
+                child: Icon(
+                  icon,
+                  color: accentColor == DSBAColors.accentGold ? DSBAColors.neutralDark : accentColor,
+                  size: 18,
+                ),
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(label,
