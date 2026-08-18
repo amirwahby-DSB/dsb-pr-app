@@ -14,13 +14,15 @@ class DSBAColors {
   static const Color danger = Color(0xFFC62828);
   static const Color textMuted = Color(0xFF6B6B6B);
 
-  /// Subtle app-wide background gradient — applied once in main.dart
-  /// behind every screen. Kept very light so it never fights with
-  /// text or card contrast; just gives the app a bit of depth instead
-  /// of a flat white/gray page.
+  /// App-wide background gradient — applied once in main.dart behind
+  /// every screen. Widened the contrast between stops (soft crimson
+  /// blush at top → warm gold cream at bottom) so it reads clearly as
+  /// a gradient instead of near-flat white, while staying light enough
+  /// to never fight with text or card contrast.
   static const List<Color> backgroundGradient = [
     Color(0xFFFFFFFF),
-    Color(0xFFF6F1E7),
+    Color(0xFFFDECEC),
+    Color(0xFFF3E4C8),
   ];
 }
 
@@ -57,12 +59,15 @@ class AppTheme {
         onSecondary: DSBAColors.neutralDark,
       ),
       
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: DSBAColors.primaryCrimson,
         foregroundColor: Colors.white,
-        elevation: 0,
+        // Subtle shadow instead of a hard flat color-cutoff edge — gives
+        // the AppBar a bit of depth without a heavy Material shadow.
+        elevation: 3,
+        shadowColor: Colors.black.withValues(alpha: 0.25),
         centerTitle: true,
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: Colors.white,
