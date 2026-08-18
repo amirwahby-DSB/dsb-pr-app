@@ -8,6 +8,7 @@ import 'screens/requests_list_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/language_select_screen.dart';
 void main() => runApp(const DSBAApp());
 class DSBAApp extends StatefulWidget {
   const DSBAApp({super.key});
@@ -41,7 +42,7 @@ class _DSBAAppState extends State<DSBAApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
       locale: Locale(localeCode),
-      home: const LoginScreen(),
+      home: const LanguageSelectScreen(),
     );
   }
 }
