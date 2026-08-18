@@ -86,13 +86,19 @@ class DashboardScreen extends StatelessWidget {
             Text(AppStrings.quickActions,
                 style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
             const SizedBox(height: 10),
-            GridView.count(
-              crossAxisCount: 2,
+            GridView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 2.4,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                // Fixed height instead of aspect ratio — these rows only
+                // hold an icon + one line of text, so a tall ratio-based
+                // height (especially on wide/web screens) left a lot of
+                // empty space below the content.
+                mainAxisExtent: 60,
+              ),
               children: [
                 _QuickAction(
                   icon: Icons.add_circle_outline,
