@@ -42,6 +42,21 @@ class _DSBAAppState extends State<DSBAApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
       locale: Locale(localeCode),
+      // خلفية متدرجة خفيفة جداً وراء كل شاشة في التطبيق — بديل
+      // للخلفية المصمتة العادية، بيدي إحساس عمق واحترافية بدون
+      // ما يأثر على وضوح النصوص أو الكروتات فوقه.
+      builder: (context, child) {
+        return DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: DSBAColors.backgroundGradient,
+            ),
+          ),
+          child: child,
+        );
+      },
       home: const LanguageSelectScreen(),
     );
   }
