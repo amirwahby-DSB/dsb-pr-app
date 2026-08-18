@@ -22,7 +22,6 @@ class PillarCard extends StatelessWidget {
         return Icons.print_outlined;
     }
   }
-
   /// Returns the pillar's title in the currently selected app language.
   String _localizedTitle(Pillar p) {
     switch (LocaleService.instance.language) {
@@ -32,6 +31,17 @@ class PillarCard extends StatelessWidget {
         return p.titleEn;
       case AppLanguage.de:
         return p.titleDe;
+    }
+  }
+
+  String _viewServicesLabel() {
+    switch (LocaleService.instance.language) {
+      case AppLanguage.ar:
+        return 'عرض الخدمات';
+      case AppLanguage.en:
+        return 'View services';
+      case AppLanguage.de:
+        return 'Leistungen ansehen';
     }
   }
 
@@ -61,6 +71,23 @@ class PillarCard extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+              ),
+              const Spacer(),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _viewServicesLabel(),
+                      style: const TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        color: DSBAColors.primaryCrimson,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward, size: 14, color: DSBAColors.primaryCrimson),
+                ],
               ),
             ],
           ),
