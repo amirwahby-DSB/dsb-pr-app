@@ -25,20 +25,27 @@ class ServicesCatalogScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 14,
-                crossAxisSpacing: 14,
-                childAspectRatio: 1.15,
-                children: Pillar.values
-                    .map((p) => PillarCard(
-                          pillar: p,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => PillarDetailScreen(pillar: p)),
-                          ),
-                        ))
-                    .toList(),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 14,
+                  crossAxisSpacing: 14,
+                  // Fixed height instead of aspect ratio, so the card stays
+                  // a sensible size regardless of how wide the screen is
+                  // (mobile vs. web/desktop).
+                  mainAxisExtent: 190,
+                ),
+                itemCount: Pillar.values.length,
+                itemBuilder: (context, i) {
+                  final p = Pillar.values[i];
+                  return PillarCard(
+                    pillar: p,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => PillarDetailScreen(pillar: p)),
+                    ),
+                  );
+                },
               ),
             ),
           ],
