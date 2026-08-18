@@ -28,6 +28,46 @@ class MockDataService {
     role: UserRole.prAdmin,
   );
 
+  // قائمة اليوزرز التجريبيين لشاشة اختيار الدخول (هنستخدمها في المرحلة 2)
+  static const List<AppUser> mockUsers = [
+    AppUser(
+      userId: 'u-001',
+      fullName: 'Amir Wahby',
+      fullNameAr: 'أمير وهبي',
+      email: 'p.r@dsb-alexandria.de',
+      role: UserRole.staff,
+    ),
+    AppUser(
+      userId: 'u-000',
+      fullName: 'Amir Wahby (PR Admin)',
+      fullNameAr: 'أمير وهبي (إدارة العلاقات العامة)',
+      email: 'p.r@dsb-alexandria.de',
+      phone: '+20 101 35 35 436',
+      role: UserRole.prAdmin,
+    ),
+    AppUser(
+      userId: 'u-011',
+      fullName: 'Verwaltungsleitung',
+      fullNameAr: 'المدير المالي والإداري',
+      email: 'verwaltungsleitung@dsb-alexandria.de',
+      role: UserRole.leadership,
+    ),
+    AppUser(
+      userId: 'u-012',
+      fullName: 'Schulleiter',
+      fullNameAr: 'مدير المدرسة',
+      email: 'schulleiter@dsb-alexandria.de',
+      role: UserRole.leadership,
+    ),
+    AppUser(
+      userId: 'u-013',
+      fullName: 'AGE Repräsentantin',
+      fullNameAr: 'رئيس مجلس الإدارة',
+      email: 'age.reprasentantin@dsb-alexanddria.de',
+      role: UserRole.leadership,
+    ),
+  ];
+
   List<PRRequest> getMyRequests() => [
         PRRequest(
           requestId: 'PR-2026-00147',
