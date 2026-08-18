@@ -84,6 +84,7 @@ class LoginScreen extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios, size: 14),
               onTap: () {
+                MockDataService.instance.setCurrentUser(u);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (_) => const DashboardScreen()),
