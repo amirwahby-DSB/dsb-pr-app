@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:typed_data';
@@ -56,6 +57,20 @@ class ReportGenerator {
     };
   }
 
+  /// Loads the bundled Tajawal font so Arabic (and Latin/German) glyphs
+  /// render correctly in the PDF — the pdf package's default (Helvetica)
+  /// has no Arabic glyphs at all.
+  static Future<pw.ThemeData> _buildTheme() async {
+    final regularData = await rootBundle.load('assets/fonts/Tajawal-Regular.ttf');
+    final boldData = await rootBundle.load('assets/fonts/Tajawal-Bold.ttf');
+    final regular = pw.Font.ttf(regularData);
+    final bold = pw.Font.ttf(boldData);
+    return pw.ThemeData.withFont(
+      base: regular,
+      bold: bold,
+    );
+  }
+
   /// Builds the PDF document bytes for the given period.
   /// [allRequests] should come from MockDataService.instance.getAllRequests()
   /// (or a real backend call once wired up).
@@ -63,7 +78,8 @@ class ReportGenerator {
     required List<PRRequest> allRequests,
     required ReportPeriod period,
   }) async {
-    final doc = pw.Document();
+    final theme = await _buildTheme();
+    final doc = pw.Document(theme: theme);
     final filtered = filterByPeriod(allRequests, period);
     final lang = LocaleService.instance.language;
     final title = periodLabel(period);
@@ -102,9 +118,9 @@ class ReportGenerator {
             data: filtered
                 .map((r) => [
                       r.requestId,
-                      lang == AppLanguage.ar ? r.pillar.titleAr : r.pillar.titleEn,
+                      r.pillar.title, // locale-aware (ar/en/de) instead of manual ar/en ternary
                       '${r.createdAt.year}-${r.createdAt.month.toString().padLeft(2, '0')}-${r.createdAt.day.toString().padLeft(2, '0')}',
-                      r.status.labelAr,
+                      r.status.label, // locale-aware (ar/en/de) instead of hardcoded labelAr
                     ])
                 .toList(),
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
