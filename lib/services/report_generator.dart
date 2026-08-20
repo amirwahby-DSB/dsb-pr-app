@@ -113,13 +113,16 @@ class ReportGenerator {
 
     doc.addPage(
       pw.MultiPage(
-        pageFormat: PdfPageFormat.a4,
-        textDirection: textDirection,
-        // Faint logo watermark centered behind the content of every page.
-        background: (context) => pw.Center(
-          child: pw.Opacity(
-            opacity: 0.07,
-            child: pw.Image(logo, width: 320),
+        // pageFormat + textDirection + the background watermark all live
+        // together inside PageTheme in this version of the pdf package.
+        pageTheme: pw.PageTheme(
+          pageFormat: PdfPageFormat.a4,
+          textDirection: textDirection,
+          buildBackground: (context) => pw.Center(
+            child: pw.Opacity(
+              opacity: 0.07,
+              child: pw.Image(logo, width: 320),
+            ),
           ),
         ),
         build: (context) => [
