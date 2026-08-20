@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Deutsche Schule der Borromäerinnen Alexandria - PR & Operations Portal">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="DSBA Portal">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <!-- Theme color shown in the browser UI (address bar on mobile) -->
+  <meta name="theme-color" content="#D32F2F">
+
+  <title>DSBA PR & Operations Portal</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #F8F9FA;
+    }
+
+    /* DSBA-branded splash screen, shown until the Flutter app takes over */
+    #dsba-splash {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FDECEC 55%, #F3E4C8 100%);
+      z-index: 9999;
+    }
+
+    #dsba-splash img {
+      width: 140px;
+      height: 140px;
+      animation: dsba-pulse 1.6s ease-in-out infinite;
+    }
+
+    #dsba-splash .dsba-title {
+      margin-top: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #212121;
+      letter-spacing: 0.3px;
+    }
+
+    @keyframes dsba-pulse {
+      0%   { transform: scale(1);    opacity: 1;   }
+      50%  { transform: scale(1.06); opacity: 0.85; }
+      100% { transform: scale(1);    opacity: 1;   }
+    }
+
+    /* Fades out smoothly once Flutter signals it has rendered the first frame */
+    #dsba-splash.dsba-splash-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+  <div id="dsba-splash">
+    <img src="icons/Icon-192.png" alt="DSBA logo">
+    <div class="dsba-title">DSBA PR &amp; Operations Portal</div>
+  </div>
+
+  <script src="flutter_bootstrap.js" async></script>
+  <script>
+    // Remove the custom splash once Flutter has booted and drawn its first frame.
+    window.addEventListener('flutter-first-frame', function () {
+      var splash = document.getElementById('dsba-splash');
+      if (splash) {
+        splash.classList.add('dsba-splash-hidden');
+        setTimeout(function () { splash.remove(); }, 450);
+      }
+    });
+  </script>
+</body>
+</html>
