@@ -84,6 +84,10 @@ class ReportGenerator {
     final lang = LocaleService.instance.language;
     final title = periodLabel(period);
 
+    // Arabic reads right-to-left; English/German read left-to-right.
+    final textDirection = lang == AppLanguage.ar ? pw.TextDirection.rtl : pw.TextDirection.ltr;
+    final tableAlignment = lang == AppLanguage.ar ? pw.Alignment.centerRight : pw.Alignment.centerLeft;
+
     final generatedOnLabel = switch (lang) {
       AppLanguage.ar => 'تاريخ الإصدار',
       AppLanguage.en => 'Generated on',
@@ -103,30 +107,44 @@ class ReportGenerator {
     doc.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
+        textDirection: textDirection,
         build: (context) => [
           pw.Header(
             level: 0,
-            child: pw.Text(title, style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
+            child: pw.Text(
+              title,
+              textDirection: textDirection,
+              style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+            ),
           ),
-          pw.Text('$generatedOnLabel: ${DateTime.now().toString().split('.').first}',
-              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700)),
-          pw.Text('$totalLabel: ${filtered.length}',
-              style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
+          pw.Text(
+            '$generatedOnLabel: ${DateTime.now().toString().split('.').first}',
+            textDirection: textDirection,
+            style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+          ),
+          pw.Text(
+            '$totalLabel: ${filtered.length}',
+            textDirection: textDirection,
+            style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
+          ),
           pw.SizedBox(height: 16),
-          pw.TableHelper.fromTextArray(
-            headers: headers,
-            data: filtered
-                .map((r) => [
-                      r.requestId,
-                      r.pillar.title, // locale-aware (ar/en/de) instead of manual ar/en ternary
-                      '${r.createdAt.year}-${r.createdAt.month.toString().padLeft(2, '0')}-${r.createdAt.day.toString().padLeft(2, '0')}',
-                      r.status.label, // locale-aware (ar/en/de) instead of hardcoded labelAr
-                    ])
-                .toList(),
-            headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
-            cellStyle: const pw.TextStyle(fontSize: 9),
-            cellAlignment: pw.Alignment.centerLeft,
-            headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+          pw.Directionality(
+            textDirection: textDirection,
+            child: pw.TableHelper.fromTextArray(
+              headers: headers,
+              data: filtered
+                  .map((r) => [
+                        r.requestId,
+                        r.pillar.title, // locale-aware (ar/en/de) instead of manual ar/en ternary
+                        '${r.createdAt.year}-${r.createdAt.month.toString().padLeft(2, '0')}-${r.createdAt.day.toString().padLeft(2, '0')}',
+                        r.status.label, // locale-aware (ar/en/de) instead of hardcoded labelAr
+                      ])
+                  .toList(),
+              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
+              cellStyle: const pw.TextStyle(fontSize: 9),
+              cellAlignment: tableAlignment,
+              headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+            ),
           ),
         ],
       ),
