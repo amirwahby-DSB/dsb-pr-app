@@ -71,6 +71,12 @@ class ReportGenerator {
     );
   }
 
+  /// Loads the DSBA logo to be drawn as a faint watermark behind each page.
+  static Future<pw.MemoryImage> _buildWatermark() async {
+    final logoData = await rootBundle.load('assets/branding/dsba_logo.jpg');
+    return pw.MemoryImage(logoData.buffer.asUint8List());
+  }
+
   /// Builds the PDF document bytes for the given period.
   /// [allRequests] should come from MockDataService.instance.getAllRequests()
   /// (or a real backend call once wired up).
@@ -79,6 +85,7 @@ class ReportGenerator {
     required ReportPeriod period,
   }) async {
     final theme = await _buildTheme();
+    final logo = await _buildWatermark();
     final doc = pw.Document(theme: theme);
     final filtered = filterByPeriod(allRequests, period);
     final lang = LocaleService.instance.language;
@@ -108,6 +115,13 @@ class ReportGenerator {
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         textDirection: textDirection,
+        // Faint logo watermark centered behind the content of every page.
+        background: (context) => pw.Center(
+          child: pw.Opacity(
+            opacity: 0.07,
+            child: pw.Image(logo, width: 320),
+          ),
+        ),
         build: (context) => [
           pw.Header(
             level: 0,
